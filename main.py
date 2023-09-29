@@ -3,6 +3,7 @@ import face_recognition
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture("testVideo.mp4")
+    frame_number = 0
 
     # Check if the video capture was successful
     if not cap.isOpened():
@@ -27,6 +28,13 @@ if __name__ == '__main__':
         face_locations = face_recognition.face_locations(rgb_frame)
 
         for top, right, bottom, left in face_locations:
+            # Crop the face region from the frame
+            face_image = frame[top:bottom, left:right]
+
+            # Save the cropped face as an image
+            cv2.imwrite(f"face_image_{frame_number}.jpg", face_image)
+            frame_number += 1
+
             # Draw a box around the face
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
